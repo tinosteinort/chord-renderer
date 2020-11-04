@@ -1,0 +1,19 @@
+{
+  "Name": "G",
+  "FretCount": 5,
+  "StringCount": 4,
+  "FrettedNotes": [
+    {
+      "FretNumber": 2,
+      "StringNumber": 3
+    },
+    {
+      "FretNumber": 3,
+      "StringNumber": 2
+    },
+    {
+      "FretNumber": 2,
+      "StringNumber": 1
+    }
+  ]
+}
