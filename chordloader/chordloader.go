@@ -1,7 +1,9 @@
 package chordloader
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"strconv"
 	"strings"
 
@@ -20,26 +22,30 @@ type chordFromFileLoader struct {
 	Args []string
 }
 
-func LoadChord(args []string) (*types.Chord, error) {
-	var loader ChordLoader
-
-	if len(args) == 7 {
-		loader = &chordFromArgsLoader{Args: args}
-
-	} else if len(args) == 4 {
-		loader = &chordFromFileLoader{Args: args}
-	} else {
-		return nil, fmt.Errorf("invalid argument count: %v", args)
+func LoadChord(args []string) (types.Chord, error) {
+	loader, err := selectLoader(args)
+	if err != nil {
+		return types.Chord{}, err
 	}
 
 	chord, err := loader.Load()
 	if err != nil {
-		return nil, err
+		return types.Chord{}, err
 	}
-	return &chord, nil
+	return chord, nil
 }
 
-func (loader *chordFromArgsLoader) Load() (types.Chord, error) {
+func selectLoader(args []string) (ChordLoader, error) {
+	if len(args) == 7 {
+		return chordFromArgsLoader{Args: args}, nil
+
+	} else if len(args) == 4 {
+		return chordFromFileLoader{Args: args}, nil
+	}
+	return nil, fmt.Errorf("Could not determine loader for: %v", args)
+}
+
+func (loader chordFromArgsLoader) Load() (types.Chord, error) {
 	fretCount, err := strconv.Atoi(loader.Args[1])
 	if err != nil {
 		return types.Chord{}, fmt.Errorf("Could not convert %s to fretCount", loader.Args[1])
@@ -84,15 +90,21 @@ func toFrettedNotes(notesAsString string) ([]types.FrettedNote, error) {
 	return result, nil
 }
 
-func (loader *chordFromFileLoader) Load() (types.Chord, error) {
+func (loader chordFromFileLoader) Load() (types.Chord, error) {
 
 	chordFile := loader.Args[0]
-	println(chordFile)
 
-	return types.Chord{
-		Name:         "",
-		FretCount:    0,
-		StringCount:  0,
-		FrettedNotes: nil,
-	}, nil
+	chordFromFile := &types.Chord{}
+
+	data, err := ioutil.ReadFile(chordFile)
+	if err != nil {
+		return types.Chord{}, err
+	}
+
+	err = json.Unmarshal(data, chordFromFile)
+	if err != nil {
+		return types.Chord{}, err
+	}
+
+	return *chordFromFile, nil
 }

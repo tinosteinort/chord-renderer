@@ -2,13 +2,44 @@ package chordloader
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"reflect"
 	"testing"
 
 	"github.com/tinosteinort/chord-renderer/types"
 )
+
+func TestSelectLoaderFromArgs(t *testing.T) {
+
+	loader, err := selectLoader([]string{"", "", "", "", "", "", ""})
+	if err != nil {
+		t.Errorf("no error expected; got %s", err)
+	}
+
+	switch loader.(type) {
+	case chordFromArgsLoader:
+		break
+	default:
+		t.Errorf("want chordFromArgsLoader")
+		break
+	}
+}
+
+func TestSelectLoaderFromFile(t *testing.T) {
+
+	loader, err := selectLoader([]string{"", "", "", ""})
+	if err != nil {
+		t.Errorf("no error expected; got %s", err)
+	}
+
+	switch loader.(type) {
+	case chordFromFileLoader:
+		break
+	default:
+		t.Errorf("want chordFromFileLoader")
+		break
+	}
+}
 
 func TestChordFromArgsLoader(t *testing.T) {
 	args := []string{"G", "5", "4", "f2:s3 f3:s2 f2:s1", "", "", ""}
@@ -52,7 +83,7 @@ func TestChordFromArgsLoader(t *testing.T) {
 
 func TestChordFromFileLoader(t *testing.T) {
 
-	expectedChord := types.Chord{
+	expectedChord := &types.Chord{
 		Name:        "G",
 		FretCount:   5,
 		StringCount: 4,
@@ -63,22 +94,18 @@ func TestChordFromFileLoader(t *testing.T) {
 		},
 	}
 
-	chord := &types.Chord{}
+	chordFromFile := &types.Chord{}
 
-	data, err := ioutil.ReadFile("test.json")
-	fmt.Printf("%v\n", string(data))
+	data, err := ioutil.ReadFile("testdata/test.json")
 	if err != nil {
 		t.Error(err)
 	}
-	err = json.Unmarshal(data, &chord)
+	err = json.Unmarshal(data, chordFromFile)
 	if err != nil {
 		t.Error(err)
 	}
 
-	if reflect.DeepEqual(expectedChord, chord) == false {
-		t.Errorf("got %v; want %v", &data, &expectedChord)
+	if reflect.DeepEqual(expectedChord, chordFromFile) == false {
+		t.Errorf("got  %v; want %v", chordFromFile, expectedChord)
 	}
-	//file, _ := json.MarshalIndent(chord, "", "  ")
-	//println(file)
-	//ioutil.WriteFile("test.json", file, 0644)
 }

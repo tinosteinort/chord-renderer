@@ -14,6 +14,7 @@ func main() {
 	validateArgsCount(args)
 
 	// https://ukuleletricks.com/wp-content/uploads/2018/10/how-to-read-ukulele-chord-diagram.png
+	// https://medium.com/rungo/unit-testing-made-easy-in-go-25077669318
 
 	chord, imageInfo, err := loadChordAndImageInfo(args)
 	if err != nil {
@@ -32,7 +33,7 @@ func validateArgsCount(args []string) error {
 	return nil
 }
 
-func loadChordAndImageInfo(args []string) (*types.Chord, *types.ImageInfo, error) {
+func loadChordAndImageInfo(args []string) (types.Chord, types.ImageInfo, error) {
 
 	chord, err := chordloader.LoadChord(args)
 	if err != nil {
@@ -46,7 +47,7 @@ func loadChordAndImageInfo(args []string) (*types.Chord, *types.ImageInfo, error
 		os.Exit(1)
 	}
 
-	return chord, &imageInfo, nil
+	return chord, imageInfo, nil
 }
 
 func argsToImageInfo(args []string) (types.ImageInfo, error) {
