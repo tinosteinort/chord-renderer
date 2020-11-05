@@ -1,50 +1,17 @@
-package chordloader
+package chordloader_test
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"reflect"
 	"testing"
+
+	"github.com/tinosteinort/chord-renderer/chordloader"
 
 	"github.com/tinosteinort/chord-renderer/types"
 )
 
-func TestSelectLoaderFromArgs(t *testing.T) {
-
-	loader, err := selectLoader([]string{"", "", "", "", "", "", ""})
-	if err != nil {
-		t.Errorf("no error expected; got %s", err)
-	}
-
-	switch loader.(type) {
-	case chordFromArgsLoader:
-		break
-	default:
-		t.Errorf("want chordFromArgsLoader")
-		break
-	}
-}
-
-func TestSelectLoaderFromFile(t *testing.T) {
-
-	loader, err := selectLoader([]string{"", "", "", ""})
-	if err != nil {
-		t.Errorf("no error expected; got %s", err)
-	}
-
-	switch loader.(type) {
-	case chordFromFileLoader:
-		break
-	default:
-		t.Errorf("want chordFromFileLoader")
-		break
-	}
-}
-
-func TestChordFromArgsLoader(t *testing.T) {
+func TestLoadChordFromArgs(t *testing.T) {
 	args := []string{"G", "5", "4", "f2:s3 f3:s2 f2:s1", "", "", ""}
-	loader := chordFromArgsLoader{Args: args}
-	chord, err := loader.Load()
+	chord, err := chordloader.LoadChord(args)
 
 	if err != nil {
 		t.Error(err)
@@ -81,9 +48,14 @@ func TestChordFromArgsLoader(t *testing.T) {
 	}
 }
 
-func TestChordFromFileLoader(t *testing.T) {
+func TestLoadChordFromFile(t *testing.T) {
+	args := []string{"testdata/g-chord.json", "", "", ""}
+	chord, err := chordloader.LoadChord(args)
+	if err != nil {
+		t.Errorf("Could not load chord %s", err)
+	}
 
-	expectedChord := &types.Chord{
+	expectedChord := types.Chord{
 		Name:        "G",
 		FretCount:   5,
 		StringCount: 4,
@@ -94,18 +66,7 @@ func TestChordFromFileLoader(t *testing.T) {
 		},
 	}
 
-	chordFromFile := &types.Chord{}
-
-	data, err := ioutil.ReadFile("testdata/test.json")
-	if err != nil {
-		t.Error(err)
-	}
-	err = json.Unmarshal(data, chordFromFile)
-	if err != nil {
-		t.Error(err)
-	}
-
-	if reflect.DeepEqual(expectedChord, chordFromFile) == false {
-		t.Errorf("got  %v; want %v", chordFromFile, expectedChord)
+	if reflect.DeepEqual(expectedChord, chord) == false {
+		t.Errorf("got  %v; want %v", chord, expectedChord)
 	}
 }
