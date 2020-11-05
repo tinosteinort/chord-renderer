@@ -11,7 +11,11 @@ import (
 
 func main() {
 	args := os.Args[1:]
-	validateArgsCount(args)
+	err := validateArgsCount(args)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	// https://ukuleletricks.com/wp-content/uploads/2018/10/how-to-read-ukulele-chord-diagram.png
 	// https://medium.com/rungo/unit-testing-made-easy-in-go-25077669318
