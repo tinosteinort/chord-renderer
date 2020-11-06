@@ -26,7 +26,7 @@ func main() {
 	}
 
 	fmt.Println(chord.Name)
-	fmt.Printf("%dx%d\n", imageInfo.Width, imageInfo.Height)
+	fmt.Printf("%s - %dx%d\n", imageInfo.TargetFile, imageInfo.Width, imageInfo.Height)
 }
 
 func validateArgsCount(args []string) error {
@@ -40,14 +40,12 @@ func loadChordAndImageInfo(args []string) (chordloader.Chord, imageinfo.ImageInf
 
 	chord, err := chordloader.LoadChord(args)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return chordloader.Chord{}, imageinfo.ImageInfo{}, err
 	}
 
 	imageInfo, err := imageinfo.FromArgs(args)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return chordloader.Chord{}, imageinfo.ImageInfo{}, err
 	}
 
 	return chord, imageInfo, nil
