@@ -6,7 +6,6 @@ import (
 
 	"github.com/tinosteinort/chord-renderer/chordloader"
 	"github.com/tinosteinort/chord-renderer/imageinfo"
-	"github.com/tinosteinort/chord-renderer/types"
 )
 
 func main() {
@@ -37,7 +36,7 @@ func validateArgsCount(args []string) error {
 	return nil
 }
 
-func loadChordAndImageInfo(args []string) (types.Chord, types.ImageInfo, error) {
+func loadChordAndImageInfo(args []string) (chordloader.Chord, imageinfo.ImageInfo, error) {
 
 	chord, err := chordloader.LoadChord(args)
 	if err != nil {

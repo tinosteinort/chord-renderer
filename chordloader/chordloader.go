@@ -2,20 +2,30 @@ package chordloader
 
 import (
 	"fmt"
-
-	"github.com/tinosteinort/chord-renderer/types"
 )
 
-type chordLoader interface {
-	Load() (types.Chord, error)
+type Chord struct {
+	Name         string
+	FretCount    int
+	StringCount  int
+	FrettedNotes []FrettedNote
 }
 
-func LoadChord(args []string) (types.Chord, error) {
+type FrettedNote struct {
+	FretNumber   int
+	StringNumber int
+}
+
+func LoadChord(args []string) (Chord, error) {
 	loader, err := selectLoader(args)
 	if err != nil {
-		return types.Chord{}, err
+		return Chord{}, err
 	}
 	return loader.Load()
+}
+
+type chordLoader interface {
+	Load() (Chord, error)
 }
 
 func selectLoader(args []string) (chordLoader, error) {

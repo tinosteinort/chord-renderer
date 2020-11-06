@@ -5,8 +5,6 @@ import (
 	"testing"
 
 	"github.com/tinosteinort/chord-renderer/chordloader"
-
-	"github.com/tinosteinort/chord-renderer/types"
 )
 
 func TestLoadChordFromArgs(t *testing.T) {
@@ -55,14 +53,14 @@ func TestLoadChordFromFile(t *testing.T) {
 		t.Errorf("Could not load chord %s", err)
 	}
 
-	expectedChord := types.Chord{
+	expectedChord := chordloader.Chord{
 		Name:        "G",
 		FretCount:   5,
 		StringCount: 4,
-		FrettedNotes: []types.FrettedNote{
-			types.FrettedNote{FretNumber: 2, StringNumber: 3},
-			types.FrettedNote{FretNumber: 3, StringNumber: 2},
-			types.FrettedNote{FretNumber: 2, StringNumber: 1},
+		FrettedNotes: []chordloader.FrettedNote{
+			chordloader.FrettedNote{FretNumber: 2, StringNumber: 3},
+			chordloader.FrettedNote{FretNumber: 3, StringNumber: 2},
+			chordloader.FrettedNote{FretNumber: 2, StringNumber: 1},
 		},
 	}
 
