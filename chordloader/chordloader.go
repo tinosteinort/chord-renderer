@@ -1,7 +1,8 @@
 package chordloader
 
 import (
-	"fmt"
+	"encoding/json"
+	"io/ioutil"
 )
 
 type Chord struct {
@@ -17,23 +18,19 @@ type FrettedNote struct {
 }
 
 func LoadChord(args []string) (Chord, error) {
-	loader, err := selectLoader(args)
+	chordFile := args[0]
+
+	chordFromFile := &Chord{}
+
+	data, err := ioutil.ReadFile(chordFile)
 	if err != nil {
 		return Chord{}, err
 	}
-	return loader.Load()
-}
 
-type chordLoader interface {
-	Load() (Chord, error)
-}
-
-func selectLoader(args []string) (chordLoader, error) {
-	if len(args) == 7 {
-		return chordFromArgsLoader{Args: args}, nil
-
-	} else if len(args) == 4 {
-		return chordFromFileLoader{Args: args}, nil
+	err = json.Unmarshal(data, chordFromFile)
+	if err != nil {
+		return Chord{}, err
 	}
-	return nil, fmt.Errorf("Could not determine loader for: %v", args)
+
+	return *chordFromFile, nil
 }

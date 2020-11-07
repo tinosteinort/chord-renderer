@@ -30,7 +30,7 @@ func main() {
 }
 
 func validateArgsCount(args []string) error {
-	if len(args) != 4 && len(args) != 7 {
+	if len(args) != 4 {
 		return fmt.Errorf("invalid amount of arguments")
 	}
 	return nil
