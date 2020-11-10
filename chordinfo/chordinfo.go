@@ -1,4 +1,4 @@
-package chordloader
+package chordinfo
 
 import (
 	"encoding/json"

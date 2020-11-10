@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/tinosteinort/chord-renderer/chordloader"
+	"github.com/tinosteinort/chord-renderer/chordinfo"
 	"github.com/tinosteinort/chord-renderer/imageinfo"
 )
 
@@ -36,16 +36,16 @@ func validateArgsCount(args []string) error {
 	return nil
 }
 
-func loadChordAndImageInfo(args []string) (chordloader.Chord, imageinfo.ImageInfo, error) {
+func loadChordAndImageInfo(args []string) (chordinfo.Chord, imageinfo.ImageInfo, error) {
 
-	chord, err := chordloader.LoadChord(args)
+	chord, err := chordinfo.LoadChord(args)
 	if err != nil {
-		return chordloader.Chord{}, imageinfo.ImageInfo{}, err
+		return chordinfo.Chord{}, imageinfo.ImageInfo{}, err
 	}
 
 	imageInfo, err := imageinfo.FromArgs(args)
 	if err != nil {
-		return chordloader.Chord{}, imageinfo.ImageInfo{}, err
+		return chordinfo.Chord{}, imageinfo.ImageInfo{}, err
 	}
 
 	return chord, imageInfo, nil
