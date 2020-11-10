@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/tinosteinort/chord-renderer/renderer"
+
 	"github.com/tinosteinort/chord-renderer/chordinfo"
 	"github.com/tinosteinort/chord-renderer/imageinfo"
 )
@@ -25,8 +27,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println(chord.Name)
-	fmt.Printf("%s - %dx%d\n", imageInfo.TargetFile, imageInfo.Width, imageInfo.Height)
+	err = renderer.Render(chord, imageInfo)
+	if err != nil {
+		fmt.Println("Could not render chord: ", err)
+		os.Exit(1)
+	}
 }
 
 func validateArgsCount(args []string) error {
