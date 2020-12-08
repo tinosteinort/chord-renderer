@@ -22,8 +22,6 @@ func Render(chord chordinfo.Chord, imageInfo imageinfo.ImageInfo) error {
 func drawImage(dc *gg.Context, chord chordinfo.Chord, imageInfo imageinfo.ImageInfo) {
 
 	dc.SetRGB255(255, 255, 255)
-	//dc.DrawRectangle(float64(0), float64(0), float64(imageInfo.Width), float64(imageInfo.Height))
-	//dc.Fill()
 	dc.Clear()
 
 	dc.SetRGB255(0, 0, 0)
@@ -62,5 +60,20 @@ func drawImage(dc *gg.Context, chord chordinfo.Chord, imageInfo imageinfo.ImageI
 		var y float64 = float64(i+1) * spaceBetweenFrets
 		dc.DrawLine(sideSpace, nutLineY+y, float64(imageInfo.Width)-sideSpace, nutLineY+y)
 		dc.Stroke()
+	}
+
+	var frettedNoteRadius float64 = 10
+	var spaceFromTop = nutLineY
+	var heightWithoutSpace float64 = float64(imageInfo.Height) - spaceFromTop - bottomSpace
+	var fretHeight float64 = heightWithoutSpace / float64(chord.FretCount)
+
+	for i := 0; i < len(chord.FrettedNotes); i++ {
+		dc.SetRGB255(0, 0, 0)
+
+		frettedNode := chord.FrettedNotes[i]
+		var x float64 = float64(imageInfo.Width) - sideSpace - (spaceBetweenStrings * float64(frettedNode.StringNumber-1))
+		var y float64 = spaceFromTop + (fretHeight / 2) + (fretHeight * float64(frettedNode.FretNumber-1))
+		dc.DrawCircle(x, y, frettedNoteRadius)
+		dc.Fill()
 	}
 }
