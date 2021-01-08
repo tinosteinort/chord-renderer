@@ -36,4 +36,14 @@ docker run \\
     -v \$(pwd):/output \\
     chord-renderer /input/g-chord.json 150 250 /output/g-chord.png
 \`\`\`
+
+
+
+# Build
+
+Building executable and docker image:
+\`\`\`
+task build
+\`\`\`
+
 END
