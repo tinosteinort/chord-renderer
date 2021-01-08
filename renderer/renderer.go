@@ -25,7 +25,7 @@ func drawImage(dc *gg.Context, chord chordinfo.Chord, imageInfo imageinfo.ImageI
 	dc.Clear()
 
 	dc.SetRGB255(0, 0, 0)
-	if err := dc.LoadFontFace("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 30); err != nil {
+	if err := dc.LoadFontFace("font/Roboto/Roboto-Medium.ttf", 30); err != nil {
 		panic(err)
 	}
 	dc.DrawStringAnchored(chord.Name, float64(imageInfo.Width/2), 20, 0.5, 0.5)
