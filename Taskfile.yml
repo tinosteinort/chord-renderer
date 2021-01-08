@@ -9,9 +9,16 @@ tasks:
       - go test ./...
     silent: true
 
-  build:
+  build-executable:
     deps:
       - test
     cmds:
       - go build
+    silent: true
+
+  build-docker-image:
+    deps:
+      - test
+    cmds:
+      - docker build -t chord-renderer:latest .
     silent: true
