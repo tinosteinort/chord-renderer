@@ -22,3 +22,14 @@ tasks:
     cmds:
       - docker build -t chord-renderer:latest .
     silent: true
+
+  build-readme:
+    cmds:
+      - ./README.md.sh
+    silent: true
+
+  build:
+    deps:
+      - build-executable
+      - build-docker-image
+      - build-readme
