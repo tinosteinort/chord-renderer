@@ -47,7 +47,7 @@ chord-renderer <chord-file.json> <image-width> <image-height> <result.png>
 docker run \
     -v $(pwd)/chordinfo_test/testdata:/input \
     -v $(pwd):/output \
-    chord-renderer /input/g-chord.json 150 250 /output/g-chord.png
+    tinosteinort/chord-renderer /input/g-chord.json 150 250 /output/g-chord.png
 ```
 
 

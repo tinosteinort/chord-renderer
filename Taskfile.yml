@@ -20,7 +20,14 @@ tasks:
     deps:
       - test
     cmds:
-      - docker build -t chord-renderer:latest .
+      - docker build -t tinosteinort/chord-renderer:latest .
+    silent: true
+
+  push-docker-image:
+    deps:
+      - build-docker-image
+    cmds:
+      - docker push tinosteinort/chord-renderer:latest
     silent: true
 
   build-readme:
