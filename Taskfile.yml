@@ -4,6 +4,16 @@ version: '3'
 
 tasks:
 
+  default:
+    cmds:
+      - task: build
+
+  build:
+    deps:
+      - build-executable
+      - build-docker-image
+      - build-readme
+
   test:
     cmds:
       - go test ./...
@@ -17,8 +27,6 @@ tasks:
     silent: true
 
   build-docker-image:
-    deps:
-      - test
     cmds:
       - docker build -t tinosteinort/chord-renderer:latest .
     silent: true
@@ -34,9 +42,3 @@ tasks:
     cmds:
       - ./README.md.sh
     silent: true
-
-  build:
-    deps:
-      - build-executable
-      - build-docker-image
-      - build-readme
